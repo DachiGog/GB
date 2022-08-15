@@ -1,2 +1,16 @@
 ﻿  Homework_Moments_01.cpp
-  Homework_Moments_01.vcxproj -> C:\Users\gmosk\Desktop\Repos\GB\SM_01\x64\Debug\Homework_Moments_01.exe
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(177,1): error C3313: 'answer': variable cannot have the type 'void'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(178,1): error C3536: 'answer': cannot be used before it is initialized
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(178,7): error C2672: 'std::get': no matching overloaded function found
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(178,1): error C2784: 'tuple_element<_Idx,std::pair<_Ty1,_Ty2>>::type &std::get(std::pair<_Ty1,_Ty2> &) noexcept': could not deduce template argument for 'std::pair<_Ty1,_Ty2> &' from 'int'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\utility(532): message : see declaration of 'std::get'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(179,12): error C2672: 'std::get': no matching overloaded function found
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(179,1): error C2784: 'tuple_element<_Idx,std::pair<_Ty1,_Ty2>>::type &std::get(std::pair<_Ty1,_Ty2> &) noexcept': could not deduce template argument for 'std::pair<_Ty1,_Ty2> &' from 'int'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\utility(532): message : see declaration of 'std::get'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(181,12): error C2672: 'std::get': no matching overloaded function found
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(181,1): error C2784: 'tuple_element<_Idx,std::pair<_Ty1,_Ty2>>::type &std::get(std::pair<_Ty1,_Ty2> &) noexcept': could not deduce template argument for 'std::pair<_Ty1,_Ty2> &' from 'int'
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.31.31103\include\utility(532): message : see declaration of 'std::get'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(188,7): error C2039: 'ChangePhoneNumber': is not a member of 'PhoneBook'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(76): message : see declaration of 'PhoneBook'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(190,7): error C2039: 'ChangePhoneNumber': is not a member of 'PhoneBook'
+C:\Users\gmosk\Desktop\Repos\GB\SM_01\Homework_Moments_01.cpp(76): message : see declaration of 'PhoneBook'

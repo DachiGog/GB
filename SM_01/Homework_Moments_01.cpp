@@ -1,10 +1,12 @@
 ﻿#include <iostream>
+#include <istream>
 #include <fstream>
-#include <string>
-#include <algorithm>
-#include <functional>
-#include <optional>
 #include <vector>
+#include <string>
+#include <tuple>
+#include <algorithm>
+#include <iomanip>
+#include <optional>
 
 using namespace std;
 
@@ -19,7 +21,17 @@ public:
 	Person(tuple<string, string, string>& psn) { tie(Name, Surname, fathersName) = psn; }
 
 	friend std::ostream& operator <<(std::ostream& out, const Person& p);
+	friend bool operator <(const Person& first, const Person& second);
+	friend bool operator ==(const Person& first, const Person& second);
 };
+bool operator <(const Person& first, const Person& second)
+{
+	return tie(first.Name, first.Surname, first.fathersName) < tie(second.Name, second.Surname, second.fathersName);
+}
+bool operator ==(const Person& first, const Person& second)
+{
+	return tie(first.Name, first.Surname, first.fathersName) == tie(second.Name, second.Surname, second.fathersName);
+}
 std::ostream& operator <<(std::ostream& out, const Person& p)
 {
 	out.setf(ios::left);
@@ -42,6 +54,8 @@ public:
 	PhoneNumber(tuple<int, int, string, optional<int>>& phn) { tie(CountryCode, TownCode, Number, AddNumber) = phn; }
 
 	friend std::ostream& operator <<(std::ostream& out, const PhoneNumber& pn);
+	friend bool operator <(const PhoneNumber& first, const PhoneNumber& second);
+	friend bool operator ==(const PhoneNumber& first, const PhoneNumber& second);
 };
 std::ostream& operator <<(std::ostream& out, const PhoneNumber& pn)
 {
@@ -50,6 +64,14 @@ std::ostream& operator <<(std::ostream& out, const PhoneNumber& pn)
 	else
 		out << "+" << pn.CountryCode << "(" << pn.TownCode << ")" << pn.Number << endl;
 	return out;
+}
+bool operator <(const PhoneNumber& first , const PhoneNumber& second)
+{
+	return tie(first.CountryCode, first.TownCode, first.Number) < tie(second.CountryCode, second.TownCode, second.Number);
+}
+bool operator ==(const PhoneNumber& first, const PhoneNumber& second)
+{
+	return tie(first.CountryCode, first.TownCode, first.Number) == tie(second.CountryCode, second.TownCode, second.Number);
 }
 
 class PhoneBook 
@@ -101,10 +123,31 @@ public:
 			}
 		}
 		else
+		
 		cout << "File cant be open\n";
 		PB.close();
 	};
 	friend ostream& operator <<(ostream& out, const PhoneBook& pb);
+	void SortByPhone()
+	{
+		sort(phone_base.begin(), phone_base.end(), [](pair<Person, PhoneNumber>first, pair<Person, PhoneNumber>second) {return first.second < second.second; });
+	}
+	void SortByName()
+	{
+		sort(phone_base.begin(), phone_base.end(), [](pair<Person, PhoneNumber>first, pair<Person, PhoneNumber>second) {return first.first < second.first; });
+	}
+	/*pair<Person, PhoneBook> GetPhoneNumber(const string& surname)
+	{
+		pair<Person, PhoneNumber> getNumber;
+		PhoneNumber theNumber;
+		for (auto& it : phone_base)
+		{
+			if (getNumber.first.Surname == surname)
+				theNumber = it.second;
+			else
+				return { "No match", nullopt };
+		}
+	}*/
 };
 ostream& operator <<(ostream& out, const PhoneBook& pb)
 {
@@ -119,17 +162,18 @@ int main()
 {
 	ifstream file("PhoneBook.txt"); 
 	PhoneBook book(file);
-
 	cout << book;
-	//cout << "------SortByPhone-------" << endl;
-	//book.SortByPhone();
-	//cout << book;
-	//cout << "------SortByName--------" << endl;
-	//book.SortByName();
-	//cout << book;
-	//cout << "-----GetPhoneNumber-----" << endl;
 
-	/*	auto print_phone_number = [&book](const string& surname)
+	cout << "------SortByPhone-------" << endl;
+	book.SortByPhone();
+	cout << book;
+
+	cout << "------SortByName--------" << endl;
+	book.SortByName();
+	cout << book;
+
+	/*cout << "-----GetPhoneNumber-----" << endl;
+		auto print_phone_number = [&book](const string& surname)
 	{
 		cout << surname << "\t";
 		auto answer = book.GetPhoneNumber(surname);
