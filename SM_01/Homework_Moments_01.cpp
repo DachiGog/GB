@@ -15,15 +15,19 @@ protected:
 public:
 	std::string Surname, Name;
 	optional<string> fathersName;
-	Person() = default;
-	Person(string name, string surname, optional<string>fathersname): Name(name), Surname(surname), fathersName(fathersname){}
+	Person(string name = "", string surname = "", optional<string>fathersname = "") : Name(name), Surname(surname), fathersName(fathersname) {}
 	Person(tuple<string, string, string>& psn) { tie(Name, Surname, fathersName) = psn; }
 
 	friend std::ostream& operator <<(std::ostream& out, const Person& p);
 };
 std::ostream& operator <<(std::ostream& out, const Person& p)
 {
-	return out << p.Surname << " " << p.Name << " " << *p.fathersName << "\t";
+	out.setf(ios::left);
+	if(p.fathersName != nullopt)
+		out << p.Name << " " << p.Surname << " " << *p.fathersName << "\t";
+	else
+		out << p.Name << " " << p.Surname << "\t";
+	return out;
 }
 
 class PhoneNumber
@@ -34,15 +38,18 @@ public:
 	int CountryCode, TownCode;
 	string Number;
 	optional<int> AddNumber;
-	PhoneNumber() = default;
-	PhoneNumber(int c_code, int t_code, string number, optional<int> add_n): CountryCode(c_code), TownCode(t_code), Number(number), AddNumber(add_n){}
+	PhoneNumber(int c_code=0, int t_code=0, string number="", optional<int> add_n=0) : CountryCode(c_code), TownCode(t_code), Number(number), AddNumber(add_n) {}
 	PhoneNumber(tuple<int, int, string, optional<int>>& phn) { tie(CountryCode, TownCode, Number, AddNumber) = phn; }
 
 	friend std::ostream& operator <<(std::ostream& out, const PhoneNumber& pn);
 };
 std::ostream& operator <<(std::ostream& out, const PhoneNumber& pn)
 {
-	return out << "+" << pn.CountryCode << "(" << pn.TownCode << ")" << pn.Number << " " << *pn.AddNumber;
+	if (pn.AddNumber != nullopt)
+		out << "+" << pn.CountryCode << "(" << pn.TownCode << ")" << pn.Number << " " << *pn.AddNumber << endl;
+	else
+		out << "+" << pn.CountryCode << "(" << pn.TownCode << ")" << pn.Number << endl;
+	return out;
 }
 
 class PhoneBook 
@@ -89,12 +96,12 @@ public:
 				else
 					pn.AddNumber = nullopt;
 
-				pair<Person, PhoneNumber> temp(p, pn);
-				phone_base.push_back(temp);
+				pair<Person, PhoneNumber> pushing(p, pn);
+				phone_base.push_back(pushing);
 			}
 		}
 		else
-		cout << "file don't open!\n";
+		cout << "File cant be open\n";
 		PB.close();
 	};
 	friend ostream& operator <<(ostream& out, const PhoneBook& pb);
