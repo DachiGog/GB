@@ -79,6 +79,7 @@ class PhoneBook
 private:	
 	vector<pair<Person, PhoneNumber>> phone_base;
 public:
+	friend ostream& operator <<(ostream& out, const PhoneBook& pb);
 	PhoneBook(ifstream& PB) 
 	{ 
 		if (PB.is_open())
@@ -126,8 +127,10 @@ public:
 		
 		cout << "File cant be open\n";
 		PB.close();
+	
+		
 	};
-	friend ostream& operator <<(ostream& out, const PhoneBook& pb);
+	
 	void SortByPhone()
 	{
 		sort(phone_base.begin(), phone_base.end(), [](pair<Person, PhoneNumber>first, pair<Person, PhoneNumber>second) {return first.second < second.second; });
@@ -136,18 +139,31 @@ public:
 	{
 		sort(phone_base.begin(), phone_base.end(), [](pair<Person, PhoneNumber>first, pair<Person, PhoneNumber>second) {return first.first < second.first; });
 	}
-	/*pair<Person, PhoneBook> GetPhoneNumber(const string& surname)
-	{
-		pair<Person, PhoneNumber> getNumber;
-		PhoneNumber theNumber;
-		for (auto& it : phone_base)
-		{
-			if (getNumber.first.Surname == surname)
-				theNumber = it.second;
-			else
-				return { "No match", nullopt };
+	pair<string, optional<PhoneNumber>> GetPhoneNumber(const string& str) {
+		PhoneNumber temp;
+		bool count = false;
+		for (const auto& it : phone_base) {
+			if (it.first.Name == str && count == false) {
+				temp = it.second;
+				count = true;
+			}
+			else if (it.first.Name == str && count == true)
+				return { "found more than 1", nullopt };
 		}
-	}*/
+		if (count)
+			return { "", temp };
+		else
+			return { "not found", nullopt };
+	}
+	void ChangePhoneNumber(const Person& p, const PhoneNumber& phn) {
+		for (auto& it : phone_base) {
+			if (tie(it.first.Name, it.first.Surname, it.first.fathersName) == tie(p.Name, p.Surname, p.fathersName)) {
+				it.second = phn;
+				break;
+			}
+		}
+	}
+	
 };
 ostream& operator <<(ostream& out, const PhoneBook& pb)
 {
@@ -172,7 +188,7 @@ int main()
 	book.SortByName();
 	cout << book;
 
-	/*cout << "-----GetPhoneNumber-----" << endl;
+	cout << "-----GetPhoneNumber-----" << endl;
 		auto print_phone_number = [&book](const string& surname)
 	{
 		cout << surname << "\t";
@@ -191,5 +207,5 @@ int main()
 		PhoneNumber{ 7, 123, "15344458", nullopt });
 	book.ChangePhoneNumber(Person{ "Mironova", "Margarita", "Vladimirovna" },
 		PhoneNumber{ 16, 465, "9155448", 13 });
-	cout << book;*/
+	cout << book;
 }
